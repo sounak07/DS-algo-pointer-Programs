@@ -7,13 +7,19 @@ int main(){
 
   Fraction f2(15,4);
 
-  f1.add(f2);
+  Fraction const f3;
 
-  f1.print();
-  f2.print();
+  cout<< f3.getNumerator() << " " << f3.getDenominator()<<endl;
 
-  f1.multiply(f2);
-	f1.print();
-	f2.print();
+  f3.setNumerator(10);
+
+  // f1.add(f2);
+  //
+  // f1.print();
+  // f2.print();
+  //
+  // f1.multiply(f2);
+	// f1.print();
+	// f2.print();
 
 }
