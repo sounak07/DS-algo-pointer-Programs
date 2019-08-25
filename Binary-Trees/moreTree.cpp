@@ -53,3 +53,50 @@ void printLevelATNewLine(BinaryTreeNode<int> *root) {
 
 
 }
+
+
+
+// Following is the Binary Tree node structure
+/**************
+class BinaryTreeNode {
+    public :
+    T data;
+    BinaryTreeNode<T> *left;
+    BinaryTreeNode<T> *right;
+
+    BinaryTreeNode(T data) {
+        this -> data = data;
+        left = NULL;
+        right = NULL;
+    }
+};
+
+***************/
+#include <stack>
+
+void zigZagOrder(BinaryTreeNode<int> *root) {
+
+  stack<BinaryTreeNode<int>*> currentLevel, nextLevel;
+  bool leftToRight = true;
+  currentLevel.push(root);
+  while (!currentLevel.empty()) {
+    BinaryTreeNode<int>* currNode = currentLevel.top();
+    currentLevel.pop();
+    if (currNode) {
+      cout << currNode->data << " ";
+      if (leftToRight) {
+        nextLevel.push(currNode->left);
+        nextLevel.push(currNode->right);
+      } else {
+        nextLevel.push(currNode->right);
+        nextLevel.push(currNode->left);
+      }
+    }
+    if (currentLevel.empty()) {
+      cout << endl;
+      leftToRight = !leftToRight;
+      swap(currentLevel, nextLevel);
+    }
+  }
+
+}
