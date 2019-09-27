@@ -1,11 +1,14 @@
 #include <iostream>
 using namespace std;
 #include "stack.h"
+#define ll long long int
+
 #include <stack>
 
-int main() {
+int main()
+{
 
-	//inbuilt
+	// inbuilt
 	stack<int> s;
 	s.push(10);
 	s.push(20);
@@ -28,7 +31,6 @@ int main() {
 	s.push(102);
 	s.push(103);
 	s.push(104);
-
 
 	cout << s.top() << endl;
 
