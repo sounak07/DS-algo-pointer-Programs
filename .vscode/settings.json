@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "*.js": "javascript",
-        "iostream": "cpp",
-        "ostream": "cpp",
-        "iomanip": "cpp",
-        "random": "cpp"
-    }
-}
