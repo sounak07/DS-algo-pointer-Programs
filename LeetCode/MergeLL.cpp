@@ -14,6 +14,7 @@ public:
     ListNode *mergeTwoLists(ListNode *l1, ListNode *l2)
     {
 
+        // to avoid null in case [][] / [][0]
         ListNode *head = new ListNode(0);
         ListNode *tail = head;
 
