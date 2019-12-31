@@ -13,33 +13,24 @@ void expandString(string strin)
 
     for (int i = 0; i < strin.length(); i++)
     {
-        if (strin[i] >= 0)
+        int x = strin[i] - '0';
+        if (strin[i + 1] == '(')
         {
-            int x = strin[i] - '0';
-
-            if (strin[i + 1] == '(')
+            for (j = i + 2; strin[j] != ')'; j++)
             {
-
-                for (j = i + 1; strin[j] != ')'; j++)
-                {
-                    if ((strin[j] >= 'a' && strin[j] <= 'z') || (strin[j] >= 'A' && strin[j] <= 'Z'))
-                    {
-                        temp += strin[j];
-                    }
-                }
-
-                for (int i = 0; i < x; i++)
-                {
-                    cout << (temp);
-                }
-
-                temp = "";
-
-                if (j < strin.length())
-                {
-                    i = j;
-                }
+                temp += strin[j];
             }
+        }
+
+        for (int j = 0; j < x; j++)
+        {
+            cout << temp;
+        }
+
+        temp = "";
+        if (i < j)
+        {
+            i = j;
         }
     }
 }
