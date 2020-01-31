@@ -1,33 +1,43 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long int ll;
-#define fast ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
+
 int main()
 {
-  fast int n;
+
+  ll n, tar;
+  ll l, r;
   cin >> n;
-  bool primes[n + 1];
-  memset(primes, true, sizeof(primes));
 
-  primes[0] = false;
-  primes[1] = false;
+  ll c = 0;
+  int arr[n];
 
-  for (int i = 2; i < sqrt(n); i++)
+  for (int i = 0; i < n; i++)
   {
-    if (primes[i])
-    {
-      for (int j = 2; i * j <= n; j++)
-      {
-        primes[i * j] = false;
-      }
-    }
+    cin >> arr[i];
   }
 
-  for (int i = 0; i <= n; i++)
+  cin >> tar;
+
+  sort(arr, arr + n);
+
+  for (int i = 0; i < n - 2; i++)
   {
-    if (primes[i])
+    l = i + 1;
+
+    r = n - 1;
+    while (l < r)
     {
-      cout << i << "\n";
+      if (arr[i] + arr[l] + arr[r] == tar)
+      {
+        cout << arr[i] << ", " << arr[l] << " and " << arr[r] << endl;
+        l++;
+        r--;
+      }
+      else if (arr[i] + arr[l] + arr[r] < tar)
+        l++;
+      else // A[i] + A[l] + A[r] > sum
+        r--;
     }
   }
 }

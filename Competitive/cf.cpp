@@ -13,8 +13,27 @@ int main()
     cin >> t;
     while (t--)
     {
-        ll n, k;
-        cin >> n >> k;
+        fast ll a, b, c, n;
+        cin >> a >> b >> c >> n;
+
+        ll maxi = max(a, max(b, c));
+
+        a = maxi - a;
+        b = maxi - b;
+        c = maxi - c;
+
+        n = n - (a + b + c);
+
+        if (n < 0 || n % 3 != 0)
+        {
+            cout << "NO"
+                 << "\n";
+        }
+        else
+        {
+            cout << "YES"
+                 << "\n";
+        }
     }
 
     return 0;

@@ -12,17 +12,45 @@ int main()
   cin >> t;
   while (t--)
   {
-    fast ll n, k;
-    cin >> n >> k;
-    if ((n / k) % k)
+    ll n, m, ans = 0;
+    cin >> n >> m;
+    int arr[n][m];
+
+    for (int i = 0; i < n; i++)
     {
-      cout << "NO"
-           << "\n";
+      for (int j = 0; j < m; j++)
+      {
+        cin >> arr[i][j];
+      }
     }
-    else
+
+    ll u, v, w, x, c = 0;
+
+    for (int i = 0; i < n; i++)
     {
-      cout << "YES"
-           << "\n";
+      for (int j = 0; j < m; j++)
+      {
+        u = v = i;
+        w = x = j;
+
+        c = 0;
+
+        while (u >= 0 && v < n && w >= 0 && x < m && arr[i][w] == arr[i][x] && arr[u][j] == arr[v][j])
+        {
+          u--;
+          v++;
+          w--;
+          x++;
+
+          c++;
+        }
+
+        ans += c;
+      }
     }
+
+    cout << ans << "\n";
   }
+
+  return 0;
 }
