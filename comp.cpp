@@ -4,40 +4,53 @@ typedef long long int ll;
 
 int main()
 {
+  int n, m;
+  cin >> n >> m;
 
-  ll n, tar;
-  ll l, r;
-  cin >> n;
-
-  ll c = 0;
-  int arr[n];
+  int **arr = new int *[n];
 
   for (int i = 0; i < n; i++)
   {
-    cin >> arr[i];
+    arr[i] = new int[m];
   }
 
-  cin >> tar;
-
-  sort(arr, arr + n);
-
-  for (int i = 0; i < n - 2; i++)
+  for (int i = 0; i < n; i++)
   {
-    l = i + 1;
-
-    r = n - 1;
-    while (l < r)
+    for (int j = 0; j < m; j++)
     {
-      if (arr[i] + arr[l] + arr[r] == tar)
-      {
-        cout << arr[i] << ", " << arr[l] << " and " << arr[r] << endl;
-        l++;
-        r--;
-      }
-      else if (arr[i] + arr[l] + arr[r] < tar)
-        l++;
-      else // A[i] + A[l] + A[r] > sum
-        r--;
+      cin >> arr[i][j];
     }
   }
+
+  int l = 0;
+  int r = 0;
+
+  while (l < n && r < m)
+  {
+    for (int i = l; i < n; i++)
+    {
+      cout << arr[i][r] << ", ";
+    }
+    l++;
+
+    for (int i = l; i < m - 1; i++)
+    {
+      cout << arr[n - 1][i] << ", ";
+    }
+    n--;
+
+    for (int i = m - 1; i >= l; i--)
+    {
+      cout << arr[i][m - 1] << ", ";
+    }
+    m--;
+
+    for (int i = m; i >= l; i--)
+    {
+      cout << arr[r][i] << ", ";
+    }
+    r++;
+  }
+
+  cout << "END" << endl;
 }
