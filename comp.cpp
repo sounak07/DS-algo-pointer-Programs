@@ -2,55 +2,56 @@
 using namespace std;
 typedef long long int ll;
 
+int rain(vector<int> height)
+{
+
+  int n = height.size();
+
+  if (n == 0)
+    return 0;
+
+  int *right = new int[n];
+  int *left = new int[n];
+  int ans = 0;
+
+  right[0] = height[0];
+  for (int i = 1; i < n; i++)
+  {
+    right[i] = max(right[i - 1], height[i]);
+  }
+
+  left[n - 1] = height[n - 1];
+
+  for (int i = n - 2; i >= 0; i--)
+  {
+    left[i] = max(left[i + 1], height[i]);
+  }
+
+  for (int i = 0; i < n; i++)
+  {
+    int x = min(left[i], right[i]) - height[i];
+    ans += x;
+  }
+
+  delete[] left;
+  delete[] right;
+
+  return ans;
+}
+
 int main()
 {
-  int n, m;
-  cin >> n >> m;
+  int n;
+  cin >> n;
 
-  int **arr = new int *[n];
-
-  for (int i = 0; i < n; i++)
-  {
-    arr[i] = new int[m];
-  }
+  vector<int> walls;
 
   for (int i = 0; i < n; i++)
   {
-    for (int j = 0; j < m; j++)
-    {
-      cin >> arr[i][j];
-    }
+    int temp;
+    cin >> temp;
+    walls.push_back(temp);
   }
 
-  int l = 0;
-  int r = 0;
-
-  while (l < n && r < m)
-  {
-    for (int i = l; i < n; i++)
-    {
-      cout << arr[i][r] << ", ";
-    }
-    l++;
-
-    for (int i = l; i < m - 1; i++)
-    {
-      cout << arr[n - 1][i] << ", ";
-    }
-    n--;
-
-    for (int i = m - 1; i >= l; i--)
-    {
-      cout << arr[i][m - 1] << ", ";
-    }
-    m--;
-
-    for (int i = m; i >= l; i--)
-    {
-      cout << arr[r][i] << ", ";
-    }
-    r++;
-  }
-
-  cout << "END" << endl;
+  cout << rain(walls) << endl;
 }
