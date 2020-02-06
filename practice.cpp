@@ -14,18 +14,13 @@ int main()
         cin >> arr[i];
     }
 
-    for (int i = 1; i < n; i++)
+    for (int i = 0; i < n; i += 2)
     {
-        int x = arr[i];
-        int j = i - 1;
+        if (i > 0 && arr[i] < arr[i - 1])
+            swap(arr[i], arr[i - 1]);
 
-        while (x < arr[j] && j >= 0)
-        {
-            arr[j + 1] = arr[j];
-            j = j - 1;
-        }
-
-        arr[j + 1] = x;
+        if (i < n - 1 && arr[i] < arr[i + 1])
+            swap(arr[i], arr[i + 1]);
     }
 
     for (int i = 0; i < n; i++)
