@@ -14,19 +14,35 @@ int main()
         cin >> arr[i];
     }
 
-    for (int i = 0; i < n; i += 2)
-    {
-        if (i > 0 && arr[i] < arr[i - 1])
-            swap(arr[i], arr[i - 1]);
+    int key;
 
-        if (i < n - 1 && arr[i] < arr[i + 1])
-            swap(arr[i], arr[i + 1]);
+    cin >> key;
+
+    int s = 0;
+    int e = n - 1;
+
+    int mid = (s + e) / 2;
+
+    int ans = -1;
+
+    while (s <= e)
+    {
+        if (arr[mid] == key)
+        {
+            //lower bound can be found as below
+            //upper bound can found as s = mid+1;
+            e = mid - 1;
+            ans = mid;
+        }
+        else if (arr[mid] > key)
+        {
+            e = mid - 1;
+        }
+        else
+        {
+            s = mid + 1;
+        }
     }
 
-    for (int i = 0; i < n; i++)
-    {
-        cout << arr[i] << " ";
-    }
-
-    cout << endl;
+    cout << ans << endl;
 }
