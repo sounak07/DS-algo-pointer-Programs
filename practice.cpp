@@ -7,41 +7,49 @@ int main()
     int n;
     cin >> n;
 
-    int *arr = new int[n];
-
-    for (int i = 0; i < n; i++)
-    {
-        cin >> arr[i];
-    }
-
-    int key;
-
-    cin >> key;
+    int p;
+    cin >> p;
 
     int s = 0;
-    int e = n - 1;
+    int e = n;
 
-    int mid = (s + e) / 2;
-
-    int ans = -1;
+    float ans;
+    int mid;
 
     while (s <= e)
+
     {
-        if (arr[mid] == key)
+        mid = (s + e) / 2;
+
+        if (mid * mid == n)
         {
-            //lower bound can be found as below
-            //upper bound can found as s = mid+1;
-            e = mid - 1;
             ans = mid;
+            break;
         }
-        else if (arr[mid] > key)
+        else if (mid * mid > n)
         {
             e = mid - 1;
         }
         else
         {
             s = mid + 1;
+            ans = mid;
         }
+    }
+
+    //fractional part;
+    float inc = 0.1;
+
+    for (int i = 0; i < p; i++)
+    {
+        // ans += inc;
+        while (ans * ans <= n)
+        {
+            ans += inc;
+        }
+
+        ans = ans - inc;
+        inc = inc / 10;
     }
 
     cout << ans << endl;
