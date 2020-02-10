@@ -2,55 +2,42 @@
 using namespace std;
 typedef long long int ll;
 
-int main()
+int search(int *arr, int n)
 {
-    int n;
-    cin >> n;
+    int low = 0;
+    int mid = 0;
+    int high = n - 1;
 
-    int p;
-    cin >> p;
-
-    int s = 0;
-    int e = n;
-
-    float ans;
-    int mid;
-
-    while (s <= e)
-
+    while (mid <= high)
     {
-        mid = (s + e) / 2;
-
-        if (mid * mid == n)
+        if (arr[mid] == 1)
         {
-            ans = mid;
-            break;
+            mid++;
         }
-        else if (mid * mid > n)
+        else if (arr[mid] == 2)
         {
-            e = mid - 1;
+            swap(arr[mid], arr[high]);
+            high--;
         }
         else
         {
-            s = mid + 1;
-            ans = mid;
+            swap(arr[mid], arr[low]);
+            mid++;
+            low++;
         }
     }
 
-    //fractional part;
-    float inc = 0.1;
-
-    for (int i = 0; i < p; i++)
+    for (int i = 0; i < n; i++)
     {
-        // ans += inc;
-        while (ans * ans <= n)
-        {
-            ans += inc;
-        }
-
-        ans = ans - inc;
-        inc = inc / 10;
+        cout << arr[i] << " ";
     }
 
-    cout << ans << endl;
+    cout << endl;
+}
+
+int main()
+{
+    int arr[] = {1, 2, 1, 1, 0, 1, 0, 2};
+
+    search(arr, 8);
 }
