@@ -2,11 +2,20 @@
 using namespace std;
 typedef long long int ll;
 
-int search(int *arr, int n)
+int main()
 {
+    int n;
+    cin >> n;
+
+    int *arr = new int[n];
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
     int low = 0;
-    int mid = 0;
-    int high = n - 1;
+    int mid = 0, high = n - 1;
 
     while (mid <= high)
     {
@@ -21,23 +30,14 @@ int search(int *arr, int n)
         }
         else
         {
-            swap(arr[mid], arr[low]);
-            mid++;
+            swap(arr[low], arr[mid]);
             low++;
+            mid++;
         }
     }
 
     for (int i = 0; i < n; i++)
     {
-        cout << arr[i] << " ";
+        cout << arr[i] << endl;
     }
-
-    cout << endl;
-}
-
-int main()
-{
-    int arr[] = {1, 2, 1, 1, 0, 1, 0, 2};
-
-    search(arr, 8);
 }
