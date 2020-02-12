@@ -2,56 +2,41 @@
 using namespace std;
 typedef long long int ll;
 
-int rain(vector<int> height)
+bool myCompare(pair<string, int> &a, pair<string, int> &b)
+
 {
 
-  int n = height.size();
-
-  if (n == 0)
-    return 0;
-
-  int *right = new int[n];
-  int *left = new int[n];
-  int ans = 0;
-
-  right[0] = height[0];
-  for (int i = 1; i < n; i++)
+  if (a.second == b.second)
   {
-    right[i] = max(right[i - 1], height[i]);
+    return a.first < b.first;
   }
 
-  left[n - 1] = height[n - 1];
-
-  for (int i = n - 2; i >= 0; i--)
-  {
-    left[i] = max(left[i + 1], height[i]);
-  }
-
-  for (int i = 0; i < n; i++)
-  {
-    int x = min(left[i], right[i]) - height[i];
-    ans += x;
-  }
-
-  delete[] left;
-  delete[] right;
-
-  return ans;
+  return a.second > b.second;
 }
 
 int main()
 {
-  int n;
+  int n, t;
   cin >> n;
+  cin >> t;
 
-  vector<int> walls;
+  pair<string, int> arr[1000];
 
-  for (int i = 0; i < n; i++)
+  string s;
+  int a;
+
+  for (int i = 0; i < t; i++)
   {
-    int temp;
-    cin >> temp;
-    walls.push_back(temp);
+    cin >> s >> a;
+    arr[i].first = s;
+    arr[i].second = a;
   }
 
-  cout << rain(walls) << endl;
+  sort(arr, arr + t, myCompare);
+
+  for (int i = 0; i < t; i++)
+  {
+    if (arr[i].second >= n)
+      cout << arr[i].first << " " << arr[i].second << endl;
+  }
 }
