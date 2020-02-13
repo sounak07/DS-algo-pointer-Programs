@@ -2,48 +2,76 @@
 using namespace std;
 typedef long long int ll;
 
-bool myCompare(string a, string b)
+int lowerBound(int *arr, int s, int e, int key)
 {
-    int sizeA = a.size() - 1;
-    int sizeB = b.size() - 1;
+    int mid;
 
-    int i = 0, flag = 0;
-    while (sizeA >= 0 && sizeB >= 0)
+    while (s <= e)
     {
-        if (a[i] != b[i])
-        {
-            flag = 1;
-        }
+        mid = (s + e) / 2;
 
-        i++;
-        sizeA--;
-        sizeB--;
+        if (arr[mid] == key)
+        {
+            return mid;
+        }
+        else if (arr[mid] < key)
+        {
+            s = mid + 1;
+        }
+        else
+        {
+            e = mid - 1;
+        }
     }
 
-    if (flag == 0)
-        return a > b;
+    return -1;
+}
 
-    return b > a;
+int upperBound(int *arr, int s, int e, int key)
+{
+    int mid;
+
+    while (s <= e)
+    {
+        mid = (s + e) / 2;
+
+        if (arr[mid] == key)
+        {
+            return mid;
+        }
+        else if (arr[mid] < key)
+        {
+            s = mid + 1;
+        }
+        else
+        {
+            e = mid - 1;
+        }
+    }
+
+    return -1;
 }
 
 int main()
 {
-    int n;
+    ll n;
     cin >> n;
 
-    string arr[1000];
+    int arr[n];
 
     for (int i = 0; i < n; i++)
     {
-        string str;
-        cin >> str;
-        arr[i] = str;
+        cin >> arr[i];
     }
 
-    sort(arr, arr + n, myCompare);
+    int q;
+    cin >> q;
 
-    for (int i = 0; i < n; i++)
+    while (q--)
     {
-        cout << arr[i] << endl;
+        int key;
+
+        cout << lowerBound(arr, 0, n - 1, key) << endl;
+        cout << upperBound(arr, 0, n - 1, key) << endl;
     }
 }
