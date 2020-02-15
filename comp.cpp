@@ -2,41 +2,28 @@
 using namespace std;
 typedef long long int ll;
 
-bool myCompare(pair<string, int> &a, pair<string, int> &b)
-
-{
-
-  if (a.second == b.second)
-  {
-    return a.first < b.first;
-  }
-
-  return a.second > b.second;
-}
-
 int main()
 {
-  int n, t;
-  cin >> n;
-  cin >> t;
+  ll n, m, x, y;
+  cin >> n >> m >> x >> y;
 
-  pair<string, int> arr[1000];
+  ll mid, s = 0, e = n;
+  ll ans;
 
-  string s;
-  int a;
-
-  for (int i = 0; i < t; i++)
+  while (s <= e)
   {
-    cin >> s >> a;
-    arr[i].first = s;
-    arr[i].second = a;
+    mid = (s + e) / 2;
+
+    if ((mid * x) <= m + ((n - mid) * y))
+    {
+      ans = mid;
+      s=mid+1;
+    }
+    else
+    {
+      e = mid - 1;
+    }
   }
 
-  sort(arr, arr + t, myCompare);
-
-  for (int i = 0; i < t; i++)
-  {
-    if (arr[i].second >= n)
-      cout << arr[i].first << " " << arr[i].second << endl;
-  }
+  cout << ans << endl;
 }

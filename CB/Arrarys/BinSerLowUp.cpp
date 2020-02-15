@@ -2,47 +2,82 @@
 using namespace std;
 typedef long long int ll;
 
+int lowerBound(int *arr, int s, int e, int key)
+{
+    int mid;
+    int ans = -1;
+
+    while (s <= e)
+    {
+        mid = (s + e) / 2;
+
+        if (arr[mid] == key)
+        {
+            ans = mid;
+            e = mid - 1;
+        }
+        else if (arr[mid] < key)
+        {
+            s = mid + 1;
+        }
+        else
+        {
+            e = mid - 1;
+        }
+    }
+
+    return ans;
+}
+
+int upperBound(int *arr, int s, int e, int key)
+{
+    int mid;
+    int ans = -1;
+
+    while (s <= e)
+    {
+        mid = (s + e) / 2;
+
+        if (arr[mid] == key)
+        {
+            ans = mid;
+            s = mid + 1;
+        }
+        else if (arr[mid] < key)
+        {
+            s = mid + 1;
+        }
+        else
+        {
+            e = mid - 1;
+        }
+    }
+
+    return ans;
+}
+
 int main()
 {
-    int n;
+    ll n;
     cin >> n;
 
-    int *arr = new int[n];
+    int arr[n];
 
     for (int i = 0; i < n; i++)
     {
         cin >> arr[i];
     }
 
-    int key;
+    int q;
+    cin >> q;
 
-    cin >> key;
-
-    int s = 0;
-    int e = n - 1;
-
-    int mid = (s + e) / 2;
-
-    int ans = -1;
-
-    while (s <= e)
+    while (q--)
     {
-        if (arr[mid] == key)
-        {
-            //lower bound can be found as below
-            //upper bound can found as s = mid+1;
-            e = mid - 1;
-            ans = mid;
-        }
-        else if (arr[mid] > key)
-        {
-            e = mid - 1;
-        }
-        else
-        {
-            s = mid + 1;
-        }
-    }
+        ll key;
 
-    cout << ans << endl;
+        cin >> key;
+
+        cout << lowerBound(arr, 0, n - 1, key) << endl;
+        cout << upperBound(arr, 0, n - 1, key) << endl;
+    }
 }
