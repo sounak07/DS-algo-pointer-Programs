@@ -4,26 +4,28 @@ typedef long long int ll;
 
 int main()
 {
-  ll n, m, x, y;
-  cin >> n >> m >> x >> y;
+  ll n;
+  cin >> n;
 
-  ll mid, s = 0, e = n;
-  ll ans;
+  ll arr[n];
 
-  while (s <= e)
+  for (int i = 0; i < n; i++)
   {
-    mid = (s + e) / 2;
+    cin >> arr[i];
+  }
 
-    if ((mid * x) <= m + ((n - mid) * y))
+  int f = 0;
+
+  for (int i = 0; i < n / 2; i++)
+  {
+    if (arr[i] > arr[n - i - 1])
     {
-      ans = mid;
-      s=mid+1;
-    }
-    else
-    {
-      e = mid - 1;
+      f = 1;
     }
   }
 
-  cout << ans << endl;
+  if (f == 1)
+    cout << "no" << endl;
+  else
+    cout << "yes" << endl;
 }

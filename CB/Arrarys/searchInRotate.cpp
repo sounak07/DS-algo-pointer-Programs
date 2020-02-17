@@ -37,7 +37,7 @@ int search(int *arr, int n, int s, int e)
 
 int main()
 {
-    int arr[] = {6, 7, 1, 2, 3, 4, 5};
+    int arr[] = {2, 3, 1, 4, 5};
 
     int n;
     cin >> n;
