@@ -1,31 +1,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long int ll;
+ll arr[1000001], pre[1000001];
 
 int main()
 {
-  ll n;
-  cin >> n;
-
-  ll arr[n];
-
-  for (int i = 0; i < n; i++)
+  int t;
+  cin >> t;
+  while (t--)
   {
-    cin >> arr[i];
-  }
+    ll n;
+    cin >> n;
+    ll res = 0;
+    memset(pre, 0, sizeof(pre));
+    pre[0] = 1;
 
-  int f = 0;
-
-  for (int i = 0; i < n / 2; i++)
-  {
-    if (arr[i] > arr[n - i - 1])
+    for (int i = 0; i < n; i++)
     {
-      f = 1;
+      cin >> arr[i];
+      res += arr[i] % n;
+      // res = (res % n);
+      res = (res + n) % n;
+      pre[res]++;
     }
-  }
 
-  if (f == 1)
-    cout << "no" << endl;
-  else
-    cout << "yes" << endl;
+    ll result = 0;
+    for (int i = 0; i < n; i++)
+    {
+      if (pre[i] > 1)
+      {
+        ll t = pre[i];
+        result += (t) * (t - 1) / 2;
+      }
+    }
+
+    cout << result << endl;
+  }
 }

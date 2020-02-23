@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long int ll;
-#define MAX 5000000
+#define MAX 86028123
 bool isPrime[MAX];
 
 vector<ll> *sieve()
@@ -26,28 +26,33 @@ vector<ll> *sieve()
     }
 
     vector<ll> *primes = new vector<ll>();
-
     primes->push_back(2);
     for (int i = 3; i < MAX; i += 2)
     {
         if (isPrime[i])
+        {
             primes->push_back(i);
+        }
     }
 
     return primes;
+
+    // for (int i = 0; i <= n; i++)
+    // {
+    //   if (isPrime[i])
+    //   {
+    //     cout << i << "\n";
+    //   }
+    // }
 }
 
 int main()
 {
-    ll t;
-    cin >> t;
+    ll n;
+
+    cin >> n;
 
     vector<ll> *primes = sieve();
-    while (t--)
-    {
-        ll n;
-        cin >> n;
 
-        cout << primes->at(n - 1) << endl;
-    }
+    cout << primes->at(n - 1) << endl;
 }
