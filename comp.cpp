@@ -1,60 +1,44 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long int ll;
+ll arr[500];
 
 int main()
 {
-  int t;
-  cin >> t;
+  int n;
+  cin >> n;
 
-  while (t--)
+  int q = 2;
+  int x = 0;
+
+  int len = 1;
+  arr[x] = 1;
+  int carry = 0;
+
+  while (q <= n)
   {
-    ll n;
-    cin >> n;
-    ll arr[1000000];
-    for (int i = 0; i < n; i++)
+    x = 0;
+    while (x < len)
     {
-      cin >> arr[i];
+      ll k = arr[x] * q + carry;
+      arr[x] = k % 10;
+      carry = k / 10;
+      x++;
     }
 
-    ll inc[n], dec[n];
-    for (int i = 0; i < n; i++)
+    while (carry != 0)
     {
-      inc[i] = 1;
+      arr[len] = carry % 10;
+      carry = carry / 10;
+      len++;
     }
-
-    for (int i = 0; i < n; i++)
-    {
-      dec[i] = 1;
-    }
-
-    for (int i = 0; i < n; i++)
-    {
-      if (arr[i] < arr[i + 1])
-      {
-        inc[i + 1] = inc[i] + 1;
-      }
-    }
-
-    for (int i = n - 1; i >= 0; i--)
-    {
-      if (arr[i] < arr[i - 1])
-      {
-        dec[i - 1] = dec[i] + 1;
-      }
-    }
-
-    ll ans = 0;
-
-    for (int i = 0; i < n; i++)
-    {
-      if (dec[i] + inc[i] - 1 > ans)
-      {
-        ans = dec[i] + inc[i] - 1;
-      }
-    }
-
-    cout << ans << endl;
+    q++;
   }
+
+  for (int i = len - 1; i >= 0; i--)
+  {
+    cout << arr[i];
+  }
+
+  cout << endl;
 }
-a
