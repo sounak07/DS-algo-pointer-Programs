@@ -1,44 +1,45 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long int ll;
-ll arr[500];
+
+bool isPrime(ll n)
+{
+  ll i = 2;
+  while (i <= sqrt(n))
+  {
+    if (n % i == 0)
+    {
+      return false;
+    }
+
+    i++;
+  }
+
+  return true;
+}
 
 int main()
 {
-  int n;
-  cin >> n;
 
-  int q = 2;
-  int x = 0;
-
-  int len = 1;
-  arr[x] = 1;
-  int carry = 0;
-
-  while (q <= n)
+  int t;
+  cin >> t;
+  while (t--)
   {
-    x = 0;
-    while (x < len)
+    ll l, r;
+    cin >> l >> r;
+
+    if (l == 1)
+      l = 2;
+
+    ll c = 0;
+    for (ll i = l; i <= r; i++)
     {
-      ll k = arr[x] * q + carry;
-      arr[x] = k % 10;
-      carry = k / 10;
-      x++;
+      if (isPrime(i))
+      {
+        c++;
+      }
     }
 
-    while (carry != 0)
-    {
-      arr[len] = carry % 10;
-      carry = carry / 10;
-      len++;
-    }
-    q++;
+    cout << c << endl;
   }
-
-  for (int i = len - 1; i >= 0; i--)
-  {
-    cout << arr[i];
-  }
-
-  cout << endl;
 }
