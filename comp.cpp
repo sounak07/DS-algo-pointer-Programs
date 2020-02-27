@@ -2,44 +2,36 @@
 using namespace std;
 typedef long long int ll;
 
-bool isPrime(ll n)
+int countSetBits(int n)
 {
-  ll i = 2;
-  while (i <= sqrt(n))
+  int ans = 0;
+  while (n > 0)
   {
-    if (n % i == 0)
-    {
-      return false;
-    }
-
-    i++;
+    ans += (n & 1);
+    n = n >> 1;
   }
 
-  return true;
+  return ans;
+}
+
+int countSetBitsFast(int n)
+{
+  int ans = 0;
+  while (n > 0)
+  {
+    n = n & (n - 1);
+    ans++;
+  }
+
+  return ans;
 }
 
 int main()
 {
 
-  int t;
-  cin >> t;
-  while (t--)
-  {
-    ll l, r;
-    cin >> l >> r;
-
-    if (l == 1)
-      l = 2;
-
-    ll c = 0;
-    for (ll i = l; i <= r; i++)
-    {
-      if (isPrime(i))
-      {
-        c++;
-      }
-    }
-
-    cout << c << endl;
-  }
+  int n;
+  cin >> n;
+  cout << countSetBits(n) << endl;
+  cout << countSetBitsFast(n) << endl;
+  cout << __builtin_popcount(n) << endl;
 }
