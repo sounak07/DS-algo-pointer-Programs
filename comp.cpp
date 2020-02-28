@@ -2,36 +2,41 @@
 using namespace std;
 typedef long long int ll;
 
-int countSetBits(int n)
-{
-  int ans = 0;
-  while (n > 0)
-  {
-    ans += (n & 1);
-    n = n >> 1;
-  }
-
-  return ans;
-}
-
-int countSetBitsFast(int n)
-{
-  int ans = 0;
-  while (n > 0)
-  {
-    n = n & (n - 1);
-    ans++;
-  }
-
-  return ans;
-}
-
 int main()
 {
-
   int n;
   cin >> n;
-  cout << countSetBits(n) << endl;
-  cout << countSetBitsFast(n) << endl;
-  cout << __builtin_popcount(n) << endl;
+
+  int arr[100005];
+  int ans = 0, pos = 0;
+  for (int i = 0; i < n; i++)
+  {
+    cin >> arr[i];
+    ans = arr[i] ^ ans;
+  }
+
+  int temp = ans;
+
+  while ((ans & 1) != 1)
+  {
+    ans = (ans << 1);
+    pos++;
+  }
+
+  // pos = pos + 1;
+
+  int mask = (1 << pos);
+
+  int y = 0;
+
+  for (int i = 0; i < n; i++)
+  {
+    int t = (arr[i] & mask);
+    if (t > 0)
+      y = (y ^ arr[i]);
+  }
+
+  int a = (temp ^ y);
+
+  cout << min(y, a) << " " << max(y, a) << endl;
 }
