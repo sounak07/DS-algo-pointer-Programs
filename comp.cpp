@@ -7,36 +7,34 @@ int main()
   int n;
   cin >> n;
 
-  int arr[100005];
-  int ans = 0, pos = 0;
+  int arr[65] = {0};
+
+  int t, j;
   for (int i = 0; i < n; i++)
   {
-    cin >> arr[i];
-    ans = arr[i] ^ ans;
+    cin >> t;
+    j = 0;
+    while (t > 0)
+    {
+      arr[j] += (t & 1);
+      t = (t >> 1);
+      j++;
+    }
   }
 
-  int temp = ans;
-
-  while ((ans & 1) != 1)
+  for (int i = 0; i < 64; i++)
   {
-    ans = (ans << 1);
-    pos++;
+    arr[i] = arr[i] % 3;
   }
 
-  // pos = pos + 1;
+  int res = 0;
+  int p = 1;
 
-  int mask = (1 << pos);
-
-  int y = 0;
-
-  for (int i = 0; i < n; i++)
+  for (int i = 0; i < 64; i++)
   {
-    int t = (arr[i] & mask);
-    if (t > 0)
-      y = (y ^ arr[i]);
+    res += (arr[i] * p);
+    p = p * 2;
   }
 
-  int a = (temp ^ y);
-
-  cout << min(y, a) << " " << max(y, a) << endl;
+  cout << res << endl;
 }
