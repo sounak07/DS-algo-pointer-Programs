@@ -2,30 +2,33 @@
 using namespace std;
 typedef long long int ll;
 
-int main()
+void subseting(string s, int n)
 {
-  int a;
-  cin >> a;
-
-  int n;
-  cin >> n;
-
-  int ans = 1;
   int curr;
-  int asum = a;
-
+  int i = 0;
+  string str = "";
   while (n > 0)
   {
     curr = (n & 1);
-
     if (curr == 1)
     {
-      ans = ans * asum;
+      str += s[i];
     }
-    asum = asum * asum;
-
+    i++;
     n = (n >> 1);
   }
 
-  cout << ans << endl;
+  cout << str << endl;
+}
+
+int main()
+{
+  string s;
+  cin >> s;
+
+  int size = s.size();
+  for (int i = 0; i < (1 << size); i++)
+  {
+    subseting(s, i);
+  }
 }
