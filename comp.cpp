@@ -2,33 +2,54 @@
 using namespace std;
 typedef long long int ll;
 
-void subseting(string s, int n)
+int subseting(ll n, ll arr[])
 {
-  int curr;
+
+  ll res = 1;
   int i = 0;
-  string str = "";
+  int curr;
   while (n > 0)
   {
     curr = (n & 1);
     if (curr == 1)
     {
-      str += s[i];
+      res *= arr[i];
     }
     i++;
     n = (n >> 1);
   }
 
-  cout << str << endl;
+  return res;
 }
 
 int main()
 {
-  string s;
-  cin >> s;
+  ll arr[] = {2, 3, 5, 7, 11, 13, 17, 19};
 
-  int size = s.size();
-  for (int i = 0; i < (1 << size); i++)
+  int t;
+  cin >> t;
+  while (t--)
   {
-    subseting(s, i);
+    ll n;
+    cin >> n;
+
+    ll res = 0;
+
+    for (ll i = 1; i < (1 << 8); i++)
+    {
+      ll ans = subseting(i, arr);
+      ll setbits = __builtin_popcount(i);
+
+      if ((setbits % 2) == 0)
+      {
+        res -= (n / ans);
+      }
+      else
+      {
+        res += (n / ans);
+      }
+    }
+
+    cout << res << endl;
   }
 }
