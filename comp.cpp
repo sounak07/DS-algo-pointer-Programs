@@ -2,54 +2,65 @@
 using namespace std;
 typedef long long int ll;
 
-int subseting(ll n, ll arr[])
+bool doit(ll arr[], int j, int n, ll output[], int s)
 {
-
-  ll res = 1;
-  int i = 0;
-  int curr;
-  while (n > 0)
+  if (j == n)
   {
-    curr = (n & 1);
-    if (curr == 1)
+    int sum = 0;
+    if (s != 0)
     {
-      res *= arr[i];
+      for (int i = 0; i < s; i++)
+      {
+        sum += output[i];
+      }
+
+      if (sum == 0)
+      {
+        return true;
+      }
     }
-    i++;
-    n = (n >> 1);
+
+    return false;
   }
 
-  return res;
+  if (doit(arr, j + 1, n, output, s))
+    return true;
+
+  output[s] = arr[j];
+
+  if (doit(arr, j + 1, n, output, s + 1))
+    return true;
+
+  return false;
 }
 
 int main()
 {
-  ll arr[] = {2, 3, 5, 7, 11, 13, 17, 19};
-
   int t;
   cin >> t;
   while (t--)
   {
-    ll n;
+    int n;
     cin >> n;
 
-    ll res = 0;
+    ll arr[100];
 
-    for (ll i = 1; i < (1 << 8); i++)
+    for (int i = 0; i < n; i++)
     {
-      ll ans = subseting(i, arr);
-      ll setbits = __builtin_popcount(i);
-
-      if ((setbits % 2) == 0)
-      {
-        res -= (n / ans);
-      }
-      else
-      {
-        res += (n / ans);
-      }
+      cin >> arr[i];
     }
 
-    cout << res << endl;
+    ll output[10000];
+
+    bool res = doit(arr, 0, n, output, 0);
+
+    if (res)
+    {
+      cout << "Yes" << endl;
+    }
+    else
+    {
+      cout << "No" << endl;
+    }
   }
 }
