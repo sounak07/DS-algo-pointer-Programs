@@ -2,65 +2,65 @@
 using namespace std;
 typedef long long int ll;
 
-bool doit(ll arr[], int j, int n, ll output[], int s)
+string doIt(string str, int k)
 {
-  if (j == n)
-  {
-    int sum = 0;
-    if (s != 0)
-    {
-      for (int i = 0; i < s; i++)
-      {
-        sum += output[i];
-      }
+  stack<pair<char, int>> s;
 
-      if (sum == 0)
+  for (int i = 0; i < str.length(); i++)
+  {
+    char x = str[i];
+
+    if (s.size() > 0 && s.top().second == k)
+    {
+      char curr = s.top().first;
+
+      while (s.size() > 0 && s.top().first == curr)
       {
-        return true;
+        s.pop();
       }
     }
 
-    return false;
+    if (s.size() > 0 && s.top().first == x)
+    {
+      s.push(make_pair(x, s.top().second + 1));
+    }
+    else
+    {
+      s.push(make_pair(x, 1));
+    }
+
+    if (s.size() > 0 && s.top().second == k)
+    {
+      char curr = s.top().first;
+
+      while (s.size() > 0 && s.top().first == curr)
+      {
+        s.pop();
+      }
+    }
   }
 
-  if (doit(arr, j + 1, n, output, s))
-    return true;
+  string ans = "";
+  while (s.size() > 0)
+  {
+    ans += s.top().first;
+    s.pop();
+  }
 
-  output[s] = arr[j];
-
-  if (doit(arr, j + 1, n, output, s + 1))
-    return true;
-
-  return false;
+  return ans;
 }
 
 int main()
 {
-  int t;
-  cin >> t;
-  while (t--)
-  {
-    int n;
-    cin >> n;
+  string s;
+  cin >> s;
 
-    ll arr[100];
+  int k;
+  cin >> k;
 
-    for (int i = 0; i < n; i++)
-    {
-      cin >> arr[i];
-    }
+  string ans = doIt(s, k);
 
-    ll output[10000];
+  reverse(ans.begin(), ans.end());
 
-    bool res = doit(arr, 0, n, output, 0);
-
-    if (res)
-    {
-      cout << "Yes" << endl;
-    }
-    else
-    {
-      cout << "No" << endl;
-    }
-  }
+  cout << ans << endl;
 }
