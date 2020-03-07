@@ -2,65 +2,32 @@
 using namespace std;
 typedef long long int ll;
 
-string doIt(string str, int k)
+string table[10] = {" ", ".+@$", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+void doIt(char input[], char output[], int i, int j)
 {
-  stack<pair<char, int>> s;
-
-  for (int i = 0; i < str.length(); i++)
+  if (input[i] == '\0')
   {
-    char x = str[i];
-
-    if (s.size() > 0 && s.top().second == k)
-    {
-      char curr = s.top().first;
-
-      while (s.size() > 0 && s.top().first == curr)
-      {
-        s.pop();
-      }
-    }
-
-    if (s.size() > 0 && s.top().first == x)
-    {
-      s.push(make_pair(x, s.top().second + 1));
-    }
-    else
-    {
-      s.push(make_pair(x, 1));
-    }
-
-    if (s.size() > 0 && s.top().second == k)
-    {
-      char curr = s.top().first;
-
-      while (s.size() > 0 && s.top().first == curr)
-      {
-        s.pop();
-      }
-    }
+    output[j] = '\0';
+    cout << output << endl;
+    return;
   }
 
-  string ans = "";
-  while (s.size() > 0)
-  {
-    ans += s.top().first;
-    s.pop();
-  }
+  int number = input[i] - '0';
 
-  return ans;
+  for (int k = 0; k < (table[number]).size(); k++)
+  {
+    output[j] = table[number][k];
+    doIt(input, output, i + 1, j + 1);
+  }
 }
 
 int main()
 {
-  string s;
-  cin >> s;
+  char input[10];
+  char output[10];
 
-  int k;
-  cin >> k;
+  cin >> input;
 
-  string ans = doIt(s, k);
-
-  reverse(ans.begin(), ans.end());
-
-  cout << ans << endl;
+  doIt(input, output, 0, 0);
 }
