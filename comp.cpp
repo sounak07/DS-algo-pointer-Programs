@@ -2,27 +2,65 @@
 using namespace std;
 typedef long long int ll;
 
-void doIt(char input[], int i)
+bool solveMaze(char maze[][10], int soln[][10], int i, int j, int n, int m)
 {
-  if (input[i] == '\0')
+  soln[n][m] = 1;
+  if (i == n && j == m)
   {
-    cout << input << endl;
-    return;
+    for (int k = 0; k <= n; k++)
+    {
+      for (int l = 0; l <= m; l++)
+      {
+        cout << soln[k][l] << " ";
+      }
+      cout << endl;
+    }
+
+    cout << endl;
+    return true;
   }
 
-  for (int j = i; input[j] != '\0'; j++)
+  if (i > n || j > m)
   {
-    swap(input[j], input[i]);
-    doIt(input, i + 1);
-    //backtracking to restore the array
-    swap(input[j], input[i]);
+    return false;
   }
+
+  if (maze[i][j] == 'X')
+  {
+    return false;
+  }
+
+  //assuming current is solution
+  soln[i][j] = 1;
+  bool rightPath = solveMaze(maze, soln, i, j + 1, n, m);
+  bool downPath = solveMaze(maze, soln, i + 1, j, n, m);
+
+  //backtrack
+  soln[i][j] = 0;
+
+  if (rightPath == true || downPath == true)
+  {
+    return true;
+  }
+
+  return false;
 }
 
 int main()
 {
-  char input[100];
-  cin >> input;
+  int m = 4;
+  int n = 4;
+  char maze[10][10] = {
+      "0000",
+      "00X0",
+      "000X",
+      "0X00"};
 
-  doIt(input, 0);
+  int soln[10][10] = {0};
+
+  bool ans = solveMaze(maze, soln, 0, 0, n - 1, m - 1);
+  if (ans == false)
+  {
+    cout << "Path is not there" << endl;
+  }
 }
