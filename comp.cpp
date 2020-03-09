@@ -2,32 +2,27 @@
 using namespace std;
 typedef long long int ll;
 
-string table[10] = {" ", ".+@$", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
-
-void doIt(char input[], char output[], int i, int j)
+void doIt(char input[], int i)
 {
   if (input[i] == '\0')
   {
-    output[j] = '\0';
-    cout << output << endl;
+    cout << input << endl;
     return;
   }
 
-  int number = input[i] - '0';
-
-  for (int k = 0; k < (table[number]).size(); k++)
+  for (int j = i; input[j] != '\0'; j++)
   {
-    output[j] = table[number][k];
-    doIt(input, output, i + 1, j + 1);
+    swap(input[j], input[i]);
+    doIt(input, i + 1);
+    //backtracking to restore the array
+    swap(input[j], input[i]);
   }
 }
 
 int main()
 {
-  char input[10];
-  char output[10];
-
+  char input[100];
   cin >> input;
 
-  doIt(input, output, 0, 0);
+  doIt(input, 0);
 }
