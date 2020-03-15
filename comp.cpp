@@ -2,65 +2,105 @@
 using namespace std;
 typedef long long int ll;
 
-bool solveMaze(char maze[][10], int soln[][10], int i, int j, int n, int m)
+class Car
 {
-  soln[n][m] = 1;
-  if (i == n && j == m)
+private:
+  int price;
+
+public:
+  int model;
+  char *name;
+  const int tyres;
+
+  Car() : tyres(4)
   {
-    for (int k = 0; k <= n; k++)
+    name = NULL;
+    cout << "Calling" << endl;
+  }
+
+  Car(int a, int b, const char *s, int t) : tyres(t) // initialisation list to initialise const vars
+  {
+    price = a;
+    model = b;
+    int l = strlen(s) + 1;
+    name = new char[l];
+    strcpy(name, s);
+  }
+
+  Car(Car &X) : tyres(X.tyres) //initialisation list
+  {
+    price = X.price;
+    model = X.model;
+    //deep copy so self defined copy constr
+    int l = strlen(X.name) + 1;
+    name = new char[l];
+    strcpy(name, X.name);
+  }
+
+  ~Car()
+  {
+    cout << "Destroying " << name << endl;
+    //dest only deletes static vars , we need to delete dynamics by ourselfs
+    if (name != NULL)
     {
-      for (int l = 0; l <= m; l++)
-      {
-        cout << soln[k][l] << " ";
-      }
-      cout << endl;
+      delete[] name;
     }
-
-    cout << endl;
-    return true;
   }
 
-  if (i > n || j > m)
+  //copy assigment
+  void operator=(const Car &X)
   {
-    return false;
+    price = X.price;
+    model = X.model;
+    int l = strlen(X.name) + 1;
+    name = new char[l];
+    strcpy(name, X.name);
   }
 
-  if (maze[i][j] == 'X')
+  //const parameters are those which need not to be updated at all
+  void setPrice(const int p)
   {
-    return false;
+    if (p > 1000)
+      price = p;
+    else
+      price = 1000;
   }
 
-  //assuming current is solution
-  soln[i][j] = 1;
-  bool rightPath = solveMaze(maze, soln, i, j + 1, n, m);
-  bool downPath = solveMaze(maze, soln, i + 1, j, n, m);
-
-  //backtrack
-  soln[i][j] = 0;
-
-  if (rightPath == true || downPath == true)
+  // const functions are those that do not update data members of class and can be called const
+  void start() const
   {
-    return true;
+    cout << "Starting Car" << endl;
   }
 
-  return false;
-}
+  int getPrice()
+  {
+    return price;
+  }
+
+  void print()
+  {
+    cout << price << endl;
+    cout << model << endl;
+    cout << name << endl;
+    cout << tyres << endl;
+  }
+};
 
 int main()
 {
-  int m = 4;
-  int n = 4;
-  char maze[10][10] = {
-      "0000",
-      "00X0",
-      "000X",
-      "0X00"};
+  Car C(1000, 2587, "BMW", 4);
 
-  int soln[10][10] = {0};
+  Car D(2000, 2547, "AUDI", 4);
 
-  bool ans = solveMaze(maze, soln, 0, 0, n - 1, m - 1);
-  if (ans == false)
-  {
-    cout << "Path is not there" << endl;
-  }
+  Car *F = new Car(15478, 2369, "Bugati", 4);
+
+  C = D; // copy assignment operator
+  D.name[0] = 'O';
+  D.print();
+  cout << endl;
+  C.print();
+
+  F->print();
+
+  delete F;
 }

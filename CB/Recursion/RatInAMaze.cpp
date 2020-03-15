@@ -3,7 +3,7 @@ using namespace std;
 typedef long long int ll;
 
 bool solveMaze(char maze[][10], int soln[][10], int i, int j, int n, int m)
-{
+{ //we have reached last box
     soln[n][m] = 1;
     if (i == n && j == m)
     {
