@@ -2,105 +2,128 @@
 using namespace std;
 typedef long long int ll;
 
-class Car
+class DynamicArray
 {
+
 private:
-  int price;
+  int *data;
+  int capacity;
+  int nextIndex;
 
 public:
-  int model;
-  char *name;
-  const int tyres;
-
-  Car() : tyres(4)
+  DynamicArray()
   {
-    name = NULL;
-    cout << "Calling" << endl;
+    data = new int[5];
+    capacity = 5;
+    nextIndex = 0;
   }
 
-  Car(int a, int b, const char *s, int t) : tyres(t) // initialisation list to initialise const vars
+  DynamicArray(DynamicArray const &D)
   {
-    price = a;
-    model = b;
-    int l = strlen(s) + 1;
-    name = new char[l];
-    strcpy(name, s);
-  }
+    // cout << "called";
 
-  Car(Car &X) : tyres(X.tyres) //initialisation list
-  {
-    price = X.price;
-    model = X.model;
-    //deep copy so self defined copy constr
-    int l = strlen(X.name) + 1;
-    name = new char[l];
-    strcpy(name, X.name);
-  }
-
-  ~Car()
-  {
-    cout << "Destroying " << name << endl;
-    //dest only deletes static vars , we need to delete dynamics by ourselfs
-    if (name != NULL)
+    this->data = new int[D.capacity];
+    for (int i = 0; i < D.nextIndex; i++)
     {
-      delete[] name;
+      this->data[i] = D.data[i];
+    }
+
+    capacity = D.capacity;
+    nextIndex = D.nextIndex;
+  }
+
+  void operator=(DynamicArray const &D)
+  {
+    // this->data = D.data;    //shallow copy
+
+    //deep copy
+    // cout << "called";
+    this->data = new int[D.capacity];
+    for (int i = 0; i < D.nextIndex; i++)
+    {
+      this->data[i] = D.data[i];
+    }
+
+    capacity = D.capacity;
+    nextIndex = D.nextIndex;
+  }
+
+  void add(int element)
+  {
+    if (capacity == nextIndex)
+    {
+      int *arr = new int[2 * capacity];
+      for (int i = 0; i < capacity; i++)
+      {
+        arr[i] = data[i];
+      }
+
+      delete[] data;
+      data = arr;
+      capacity = 2 * capacity;
+    }
+
+    data[nextIndex] = element;
+    nextIndex++;
+  }
+
+  int getElement(int index) const
+  {
+    if (index < nextIndex)
+      return data[index];
+    else
+      return -1;
+  }
+
+  void addElement(int element, int i)
+  {
+    if (i < nextIndex)
+    {
+      data[i] = element;
+    }
+    else if (i == nextIndex)
+    {
+      data[i] = element;
+      nextIndex++;
+    }
+    else
+    {
+      return;
     }
   }
 
-  //copy assigment
-  void operator=(const Car &X)
+  void print() const
   {
-    price = X.price;
-    model = X.model;
-    int l = strlen(X.name) + 1;
-    name = new char[l];
-    strcpy(name, X.name);
-  }
-
-  //const parameters are those which need not to be updated at all
-  void setPrice(const int p)
-  {
-    if (p > 1000)
-      price = p;
-    else
-      price = 1000;
-  }
-
-  // const functions are those that do not update data members of class and can be called const
-  void start() const
-  {
-    cout << "Starting Car" << endl;
-  }
-
-  int getPrice()
-  {
-    return price;
-  }
-
-  void print()
-  {
-    cout << price << endl;
-    cout << model << endl;
-    cout << name << endl;
-    cout << tyres << endl;
+    for (int i = 0; i < nextIndex; i++)
+    {
+      cout << data[i] << " ";
+    }
+    cout << endl;
   }
 };
 
 int main()
 {
-  Car C(1000, 2587, "BMW", 4);
+  DynamicArray d1;
 
-  Car D(2000, 2547, "AUDI", 4);
+  d1.add(10);
+  d1.add(20);
+  d1.add(30);
+  d1.add(40);
+  d1.add(50);
+  d1.add(60);
+  d1.add(60);
 
-  Car *F = new Car(15478, 2369, "Bugati", 4);
+  // d1.print();
 
-  C = D; // copy assignment operator
-  D.name[0] = 'O';
-  D.print();
-  cout << endl;
-  C.print();
+  DynamicArray d2(d1);
+  DynamicArray d3;
 
-  F->print();
+  d3 = d1;
 
-  delete F;
+  d2.addElement(100, 2);
+
+  d2.print();
+  d3.print();
+  d1.print();
 }
