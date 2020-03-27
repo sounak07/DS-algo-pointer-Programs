@@ -77,30 +77,29 @@ void BFS(node *root)
   }
 }
 
-int sumTree(node *root)
+node *BalancedTreeMaking(int arr[], int s, int e)
 {
-  if (root == NULL)
+  if (s > e)
   {
-    return 0;
+    return NULL;
   }
 
-  if (root->left == NULL && root->right == NULL)
-  {
-    return root->data;
-  }
+  int mid = (s + e) / 2;
 
-  int t = root->data;
-  int x = sumTree(root->left);
-  int y = sumTree(root->right);
+  int data = arr[mid];
 
-  root->data = x + y;
+  node *root = new node(data);
+  root->left = BalancedTreeMaking(arr, s, mid - 1);
+  root->right = BalancedTreeMaking(arr, mid + 1, e);
 
-  return root->data + t;
+  return root;
 }
 
 int main()
 {
-  node *root = buildTree();
-  sumTree(root);
+  int arr[] = {2, 3, 7, 8, 1, 5, 9};
+
+  node *root = BalancedTreeMaking(arr, 0, 6);
+
   BFS(root);
 }
