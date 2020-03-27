@@ -23,22 +23,6 @@ public:
   }
 };
 
-node *buildTree()
-{
-  int d;
-  cin >> d;
-  if (d == -1)
-  {
-    return NULL;
-  }
-
-  node *root = new node(d);
-  root->left = buildTree();
-  root->right = buildTree();
-
-  return root;
-}
-
 void BFS(node *root)
 {
 
@@ -77,29 +61,40 @@ void BFS(node *root)
   }
 }
 
-node *BalancedTreeMaking(int arr[], int s, int e)
+node *insertBST(node *root, int d)
 {
-  if (s > e)
+  if (root == NULL)
   {
-    return NULL;
+    return new node(d);
   }
 
-  int mid = (s + e) / 2;
+  if (root->data >= d)
+    root->left = insertBST(root->left, d);
+  else
+    root->right = insertBST(root->right, d);
 
-  int data = arr[mid];
+  return root;
+}
 
-  node *root = new node(data);
-  root->left = BalancedTreeMaking(arr, s, mid - 1);
-  root->right = BalancedTreeMaking(arr, mid + 1, e);
+node *buildBST()
+{
+  int d;
+  cin >> d;
+
+  node *root = NULL;
+  while (d != -1)
+  {
+    root = insertBST(root, d);
+    cin >> d;
+  }
 
   return root;
 }
 
 int main()
 {
-  int arr[] = {2, 3, 7, 8, 1, 5, 9};
 
-  node *root = BalancedTreeMaking(arr, 0, 6);
+  node *root = buildBST();
 
   BFS(root);
 }
