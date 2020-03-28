@@ -61,6 +61,21 @@ void BFS(node *root)
     }
 }
 
+bool checkBST(node *root, int min = INT_MIN, int max = INT_MAX)
+{
+    if (root == NULL)
+    {
+        return true;
+    }
+
+    if (root->data >= min && root->data <= max && checkBST(root->left, min, root->data) && checkBST(root->right, root->data, max))
+    {
+        return true;
+    }
+
+    return false;
+}
+
 node *insertBST(node *root, int d)
 {
     if (root == NULL)
@@ -91,79 +106,14 @@ node *buildBST()
     return root;
 }
 
-node *findSucce(node *root)
-{
-    if (root == NULL)
-    {
-        return NULL;
-    }
-
-    if (root->left == NULL)
-    {
-        return root;
-    }
-
-    return findSucce(root->left);
-}
-
-node *deleteNode(node *root, int d)
-{
-    if (root == NULL)
-    {
-        return NULL;
-    }
-    else if (root->data > d)
-    {
-        root->left = deleteNode(root->left, d);
-        return root;
-    }
-    else if (root->data == d)
-    {
-        // when its a leaf node
-        if (root->left == NULL && root->right == NULL)
-        {
-            delete root;
-            return NULL;
-        }
-
-        //case of 1 children
-        if (root->left != NULL && root->right == NULL)
-        {
-            node *temp1 = root->left;
-            delete root;
-            return temp1;
-        }
-
-        if (root->right != NULL && root->left == NULL)
-        {
-            node *temp = root->right;
-            delete root;
-            return temp;
-        }
-
-        //case of 2 children
-        node *replace = findSucce(root->right);
-
-        root->data = replace->data;
-        root->right = deleteNode(root->right, replace->data);
-
-        return root;
-    }
-    else
-    {
-        root->right = deleteNode(root->right, d);
-        return root;
-    }
-}
-
 int main()
 {
-
     node *root = buildBST();
 
-    int s;
-    cin >> s;
+    bool ans = checkBST(root);
 
-    root = deleteNode(root, s);
-    BFS(root);
+    if (ans)
+        cout << "Y" << endl;
+    else
+        cout << "No" << endl;
 }

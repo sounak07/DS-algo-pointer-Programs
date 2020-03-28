@@ -61,6 +61,21 @@ void BFS(node *root)
   }
 }
 
+bool checkBST(node *root, int min = INT_MIN, int max = INT_MAX)
+{
+  if (root == NULL)
+  {
+    return true;
+  }
+
+  if (root->data >= min && root->data <= max && checkBST(root->left, min, root->data) && checkBST(root->right, root->data, max))
+  {
+    return true;
+  }
+
+  return false;
+}
+
 node *insertBST(node *root, int d)
 {
   if (root == NULL)
@@ -93,8 +108,12 @@ node *buildBST()
 
 int main()
 {
-
   node *root = buildBST();
 
-  BFS(root);
+  bool ans = checkBST(root);
+
+  if (ans)
+    cout << "Y" << endl;
+  else
+    cout << "No" << endl;
 }

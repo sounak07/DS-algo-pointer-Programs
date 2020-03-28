@@ -91,68 +91,25 @@ node *buildBST()
     return root;
 }
 
-node *findSucce(node *root)
+bool searchData(node *root, int d)
 {
     if (root == NULL)
     {
-        return NULL;
+        return false;
     }
 
-    if (root->left == NULL)
+    if (root->data == d)
     {
-        return root;
+        return true;
     }
 
-    return findSucce(root->left);
-}
-
-node *deleteNode(node *root, int d)
-{
-    if (root == NULL)
+    if (root->data > d)
     {
-        return NULL;
-    }
-    else if (root->data > d)
-    {
-        root->left = deleteNode(root->left, d);
-        return root;
-    }
-    else if (root->data == d)
-    {
-        // when its a leaf node
-        if (root->left == NULL && root->right == NULL)
-        {
-            delete root;
-            return NULL;
-        }
-
-        //case of 1 children
-        if (root->left != NULL && root->right == NULL)
-        {
-            node *temp1 = root->left;
-            delete root;
-            return temp1;
-        }
-
-        if (root->right != NULL && root->left == NULL)
-        {
-            node *temp = root->right;
-            delete root;
-            return temp;
-        }
-
-        //case of 2 children
-        node *replace = findSucce(root->right);
-
-        root->data = replace->data;
-        root->right = deleteNode(root->right, replace->data);
-
-        return root;
+        return searchData(root->left, d);
     }
     else
     {
-        root->right = deleteNode(root->right, d);
-        return root;
+        return searchData(root->right, d);
     }
 }
 
@@ -161,9 +118,17 @@ int main()
 
     node *root = buildBST();
 
+    BFS(root);
+
     int s;
     cin >> s;
 
-    root = deleteNode(root, s);
-    BFS(root);
+    if (searchData(root, s))
+    {
+        cout << "Found" << endl;
+    }
+    else
+    {
+        cout << "Not found" << endl;
+    }
 }
