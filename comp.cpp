@@ -23,6 +23,43 @@ public:
   }
 };
 
+class LinkedL
+{
+public:
+  node *head;
+  node *tail;
+};
+
+node *insertBST(node *root, int d)
+{
+  if (root == NULL)
+  {
+    return new node(d);
+  }
+
+  if (root->data >= d)
+    root->left = insertBST(root->left, d);
+  else
+    root->right = insertBST(root->right, d);
+
+  return root;
+}
+
+node *buildBST()
+{
+  int d;
+  cin >> d;
+
+  node *root = NULL;
+  while (d != -1)
+  {
+    root = insertBST(root, d);
+    cin >> d;
+  }
+
+  return root;
+}
+
 void BFS(node *root)
 {
 
@@ -61,59 +98,65 @@ void BFS(node *root)
   }
 }
 
-bool checkBST(node *root, int min = INT_MIN, int max = INT_MAX)
+LinkedL buildLL(node *root)
 {
+  LinkedL ans;
   if (root == NULL)
   {
-    return true;
+    ans.head = NULL;
+    ans.tail = NULL;
+    return ans;
   }
 
-  if (root->data >= min && root->data <= max && checkBST(root->left, min, root->data) && checkBST(root->right, root->data, max))
+  if (root->left == NULL && root->right == NULL)
   {
-    return true;
+    ans.head = ans.tail = root;
+    return ans;
   }
 
-  return false;
-}
-
-node *insertBST(node *root, int d)
-{
-  if (root == NULL)
+  if (root->left != NULL && root->right == NULL)
   {
-    return new node(d);
+    LinkedL leftAdd = buildLL(root->left);
+    //tail->right because we need to create a connection, just copying will replace, so we need to do it as it is.
+    leftAdd.tail->right = root;
+    ans.head = leftAdd.head;
+    ans.tail = root;
+    return ans;
   }
 
-  if (root->data >= d)
-    root->left = insertBST(root->left, d);
-  else
-    root->right = insertBST(root->right, d);
-
-  return root;
-}
-
-node *buildBST()
-{
-  int d;
-  cin >> d;
-
-  node *root = NULL;
-  while (d != -1)
+  if (root->left == NULL && root->right != NULL)
   {
-    root = insertBST(root, d);
-    cin >> d;
+    LinkedL rightAdd = buildLL(root->right);
+    root->right = rightAdd.head;
+    ans.head = root;
+    ans.tail = rightAdd.tail;
+    return ans;
   }
 
-  return root;
+  LinkedL leftAdd = buildLL(root->left);
+  LinkedL rightAdd = buildLL(root->right);
+
+  leftAdd.tail->right = root;
+  root->right = rightAdd.head;
+
+  ans.head = leftAdd.head;
+  ans.tail = rightAdd.tail;
+
+  return ans;
 }
 
 int main()
 {
   node *root = buildBST();
 
-  bool ans = checkBST(root);
+  BFS(root);
 
-  if (ans)
-    cout << "Y" << endl;
-  else
-    cout << "No" << endl;
+  LinkedL headHigh = buildLL(root);
+
+  while (headHigh.head != NULL)
+  {
+    cout << headHigh.head->data << " --> ";
+    headHigh.head = headHigh.head->right;
+  }
+  cout << endl;
 }
