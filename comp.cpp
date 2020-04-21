@@ -1,162 +1,150 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class node
+//max heap code
+void upHeapify(vector<int> &pq, int s)
 {
+  if (s == 0)
+    return;
 
-public:
-  int data;
-  node *left;
-  node *right;
+  int pInd = (s - 1) / 2;
 
-  node(int d)
+  if (pq[pInd] < pq[s])
   {
-    data = d;
-    left = NULL;
-    right = NULL;
+    swap(pq[pInd], pq[s]);
+    upHeapify(pq, pInd);
   }
-
-  ~node()
-  {
-    delete left;
-    delete right;
-  }
-};
-
-class LinkedL
-{
-public:
-  node *head;
-  node *tail;
-};
-
-node *insertBST(node *root, int d)
-{
-  if (root == NULL)
-  {
-    return new node(d);
-  }
-
-  if (root->data >= d)
-    root->left = insertBST(root->left, d);
   else
-    root->right = insertBST(root->right, d);
-
-  return root;
-}
-
-node *buildBST()
-{
-  int d;
-  cin >> d;
-
-  node *root = NULL;
-  while (d != -1)
   {
-    root = insertBST(root, d);
-    cin >> d;
-  }
-
-  return root;
-}
-
-void BFS(node *root)
-{
-
-  queue<node *> list;
-  list.push(root);
-  list.push(NULL);
-
-  while (list.size() != 0)
-  {
-    node *fron = list.front();
-
-    if (fron == NULL)
-    {
-      cout << endl;
-      list.pop();
-      if (list.size() != 0)
-      {
-        list.push(NULL);
-      }
-    }
-    else
-    {
-      cout << fron->data << " ";
-      list.pop();
-
-      if (fron->left)
-      {
-        list.push(fron->left);
-      }
-
-      if (fron->right)
-      {
-        list.push(fron->right);
-      }
-    }
+    return;
   }
 }
 
-LinkedL buildLL(node *root)
+void insertElement(vector<int> &pq, int x)
 {
-  LinkedL ans;
-  if (root == NULL)
+  pq.push_back(x);
+  upHeapify(pq, pq.size() - 1);
+}
+
+void display(vector<int> pq)
+{
+  for (int i = 0; i < pq.size(); i++)
   {
-    ans.head = NULL;
-    ans.tail = NULL;
-    return ans;
+    cout << pq[i] << " ";
   }
 
-  if (root->left == NULL && root->right == NULL)
+  cout << endl;
+}
+
+void downHeapify(vector<int> &pq, int root)
+{
+  int c1 = 2 * root + 1;
+  int c2 = 2 * root + 2;
+
+  if (c1 > pq.size() && c2 > pq.size())
+    return;
+
+  int final = root;
+
+  if (pq.size() >= c1 && pq[c1] > pq[final])
   {
-    ans.head = ans.tail = root;
-    return ans;
+    final = c1;
   }
-
-  if (root->left != NULL && root->right == NULL)
+  if (pq.size() >= c2 && pq[c2] > pq[final])
   {
-    LinkedL leftAdd = buildLL(root->left);
-    //tail->right because we need to create a connection, just copying will replace, so we need to do it as it is.
-    leftAdd.tail->right = root;
-    ans.head = leftAdd.head;
-    ans.tail = root;
-    return ans;
+    final = c2;
   }
-
-  if (root->left == NULL && root->right != NULL)
+  if (final == root)
   {
-    LinkedL rightAdd = buildLL(root->right);
-    root->right = rightAdd.head;
-    ans.head = root;
-    ans.tail = rightAdd.tail;
-    return ans;
+    return;
   }
+  swap(pq[root], pq[final]);
+  downHeapify(pq, final);
+}
 
-  LinkedL leftAdd = buildLL(root->left);
-  LinkedL rightAdd = buildLL(root->right);
+void downHeapify2(vector<int> &pq, int root, int heapSize)
+{
+  int c1 = 2 * root + 1;
+  int c2 = 2 * root + 2;
 
-  leftAdd.tail->right = root;
-  root->right = rightAdd.head;
+  if (c1 > heapSize && c2 > heapSize)
+    return;
 
-  ans.head = leftAdd.head;
-  ans.tail = rightAdd.tail;
+  int final = root;
 
-  return ans;
+  if (heapSize > c1 && pq[c1] > pq[final])
+  {
+    final = c1;
+  }
+  if (heapSize > c2 && pq[c2] > pq[final])
+  {
+    final = c2;
+  }
+  if (final == root)
+  {
+    return;
+  }
+  swap(pq[root], pq[final]);
+  downHeapify2(pq, final, heapSize);
+}
+
+void deleteo(vector<int> &pq, int sz)
+{
+  swap(pq[0], pq[sz]);
+  pq.pop_back();
+  downHeapify(pq, 0);
+}
+
+void buildHeapOptimised(vector<int> &heap)
+{
+  for (int i = heap.size() - 1; i >= 0; i--)
+  {
+    downHeapify(heap, i);
+  }
+}
+
+void heapSort(vector<int> &pq, int size)
+{
+  int heapSize = pq.size();
+  buildHeapOptimised(pq);
+  for (int i = size; i >= 0; i--)
+  {
+    swap(pq[0], pq[i]);
+    heapSize--;
+    downHeapify2(pq, 0, heapSize);
+  }
 }
 
 int main()
 {
-  node *root = buildBST();
+  vector<int> pq;
+  int n;
+  cin >> n;
 
-  BFS(root);
-
-  LinkedL headHigh = buildLL(root);
-
-  while (headHigh.head != NULL)
+  for (int i = 0; i < n; i++)
   {
-    cout << headHigh.head->data << " --> ";
-    headHigh.head = headHigh.head->right;
+    int x;
+    cin >> x;
+    insertElement(pq, x);
   }
-  cout << endl;
+
+  display(pq);
+  deleteo(pq, pq.size() - 1);
+  display(pq);
+  deleteo(pq, pq.size() - 1);
+  display(pq);
+
+  vector<int> heap;
+  for (int i = 0; i < n; i++)
+  {
+    int x;
+    cin >> x;
+    heap.push_back(x);
+  }
+
+  buildHeapOptimised(heap);
+  display(heap);
+
+  heapSort(pq, pq.size() - 1);
+  display(pq);
 }

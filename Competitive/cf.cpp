@@ -1,75 +1,51 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
-typedef unsigned long long ull;
-typedef long double ld;
-
-#define fast ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
-
-bool arraySortedOrNot(int arr[], int n)
-{
-    // Array has one or no element
-    if (n == 0 || n == 1)
-        return true;
-
-    for (int i = 1; i < n; i++)
-
-        // Unsorted pair found
-        if (arr[i - 1] > arr[i])
-            return false;
-
-    // No unsorted pair found
-    return true;
-}
+#define ff first
+#define ss second
+#define ll long long
+#define pb push_back
+#define mp make_pair
+#define pii pair<int, int>
+#define vi vector<int>
+#define mii map<int, int>
+#define pqb priority_queue<int>
+#define mk(arr, n, type) type *arr = new type[n];
 
 int main()
 {
-    fast ll t;
+
+    int t;
     cin >> t;
     while (t--)
     {
-        fast int n, m;
-        cin >> n >> m;
+        string s;
+        cin >> s;
 
-        int arr[100000];
-        int p[100000];
-        for (int i = 1; i <= n; i++)
+        vi v;
+        v.pb(0);
+
+        int n = s.length();
+
+        for (int i = 0; i < n; i++)
         {
-            cin >> arr[i];
+            if (s[i] == 'R')
+                v.pb(i + 1);
         }
 
-        for (int i = 1; i <= m; i++)
+        v.pb(n + 1);
+
+        int ans = 0;
+
+        for (int i = 0; i < v.size() - 1; i++)
         {
-            cin >> p[i];
+            cout << v[i] << endl;
         }
 
-        int l = m + 1;
-        int i = 1;
-        int f = 0;
+        for (int i = 0; i < v.size() - 1; i++)
+            ans = max(ans, v[i + 1] - v[i]);
 
-        while (l--)
-        {
-            swap(arr[p[i]], arr[p[i] + 1]);
-
-            if (arraySortedOrNot(arr, n))
-            {
-                f = 1;
-                break;
-            }
-            else
-            {
-                if (i < m)
-                    i++;
-                else
-                    i = 1;
-            }
-        }
-
-        if (f == 1)
-            cout << "Yes" << endl;
-        else
-            cout << "No" << endl;
+        cout << ans << endl;
     }
 
     return 0;

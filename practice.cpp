@@ -16,11 +16,11 @@ public:
         right = NULL;
     }
 
-    ~node()
-    {
-        delete left;
-        delete right;
-    }
+    // ~node()
+    // {
+    //     delete left;
+    //     delete right;
+    // }
 };
 
 void BFS(node *root)
