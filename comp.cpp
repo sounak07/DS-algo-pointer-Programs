@@ -54,59 +54,62 @@ void BFS(node *root)
   }
 }
 
-void preOrder(node *root)
+node *buildTree()
+{
+  int d;
+  cin >> d;
+
+  node *root = new node(d);
+
+  int c;
+  cin >> c;
+
+  if (c == 0)
+  {
+    return root;
+  }
+  else if (c == 2)
+  {
+
+    root->left = buildTree();
+    root->right = buildTree();
+  }
+  else if (c == 1)
+  {
+    root->left = buildTree();
+  }
+
+  return root;
+}
+
+void sumFind(node *root, int k, int &sum)
 {
   if (root == NULL)
   {
     return;
   }
 
-  cout << root->data << " ";
-  preOrder(root->left);
-  preOrder(root->right);
-}
-
-node *buildBST(vector<int> arr, int s, int e)
-{
-  if (s > e)
+  if (k == 0)
   {
-    return NULL;
+    sum += root->data;
   }
 
-  int mid = (s + e) / 2;
-
-  node *root = new node(arr[mid]);
-
-  root->left = buildBST(arr, s, mid - 1);
-  root->right = buildBST(arr, mid + 1, e);
-
-  return root;
+  sumFind(root->left, k - 1, sum);
+  sumFind(root->right, k - 1, sum);
 }
 
 int main()
 {
-  int t;
-  cin >> t;
+  node *root = buildTree();
 
-  while (t--)
-  {
-    int n;
-    cin >> n;
+  int k;
+  cin >> k;
 
-    vector<int> arr;
+  // BFS(root);
 
-    for (int i = 0; i < n; i++)
-    {
-      int x;
-      cin >> x;
-      arr.push_back(x);
-    }
+  int sum = 0;
 
-    node *root = buildBST(arr, 0, n - 1);
-    BFS(root);
-    cout << endl;
+  sumFind(root, k, sum);
 
-    preOrder(root);
-    cout << endl;
-  }
+  cout << sum << endl;
 }
