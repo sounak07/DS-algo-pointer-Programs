@@ -54,62 +54,96 @@ void BFS(node *root)
   }
 }
 
-node *buildTree()
+node *insertBST(node *root, int d)
 {
-  int d;
-  cin >> d;
-
-  node *root = new node(d);
-
-  int c;
-  cin >> c;
-
-  if (c == 0)
+  if (root == NULL)
   {
-    return root;
+    return new node(d);
   }
-  else if (c == 2)
-  {
 
-    root->left = buildTree();
-    root->right = buildTree();
-  }
-  else if (c == 1)
+  if (d <= root->data)
   {
-    root->left = buildTree();
+    root->left = insertBST(root->left, d);
+  }
+  else if (d > root->data)
+  {
+    root->right = insertBST(root->right, d);
   }
 
   return root;
 }
 
-void sumFind(node *root, int k, int &sum)
+node *buildTree(int n)
+{
+  node *root = NULL;
+  int d;
+  // cin >> d;
+
+  while (n--)
+  {
+    cin >> d;
+    root = insertBST(root, d);
+  }
+  return root;
+}
+
+void preOrder(node *root)
 {
   if (root == NULL)
   {
     return;
   }
 
-  if (k == 0)
+  cout << root->data << " ";
+  preOrder(root->left);
+  preOrder(root->right);
+}
+
+void printRange(node *root, int k1, int k2, vector<int> &res)
+{
+  if (root == NULL)
   {
-    sum += root->data;
+    return;
   }
 
-  sumFind(root->left, k - 1, sum);
-  sumFind(root->right, k - 1, sum);
+  if (root->data >= k1 && root->data <= k2)
+  {
+    res.push_back(root->data);
+  }
+
+  printRange(root->left, k1, k2, res);
+  printRange(root->right, k1, k2, res);
 }
 
 int main()
 {
-  node *root = buildTree();
+  int t;
+  cin >> t;
+  while (t--)
+  {
+    int n;
+    cin >> n;
 
-  int k;
-  cin >> k;
+    node *root = buildTree(n);
 
-  // BFS(root);
+    int k1, k2;
+    cin >> k1 >> k2;
 
-  int sum = 0;
+    cout << "# Preorder : ";
+    preOrder(root);
+    cout << endl;
 
-  sumFind(root, k, sum);
+    vector<int> res;
 
-  cout << sum << endl;
+    cout << "# Nodes within range are : ";
+    printRange(root, k1, k2, res);
+
+    sort(res.begin(), res.end());
+
+    for (int x : res)
+    {
+      cout << x << " ";
+    }
+    cout << endl;
+  }
 }
