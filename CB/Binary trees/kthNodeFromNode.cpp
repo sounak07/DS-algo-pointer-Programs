@@ -15,12 +15,6 @@ public:
         left = NULL;
         right = NULL;
     }
-
-    ~node()
-    {
-        delete left;
-        delete right;
-    }
 };
 
 node *insertBST(node *root, int d)
@@ -144,6 +138,11 @@ int kthNode(node *root, int k, int tar)
 
         KthLevel(root->left, k - R - 1);
         return 1 + R;
+    }
+
+    if (L == -1 && R == -1 && root->data != tar)
+    {
+        return -1;
     }
 }
 

@@ -1,150 +1,112 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//max heap code
-void upHeapify(vector<int> &pq, int s)
+class node
 {
-  if (s == 0)
-    return;
+public:
+  int data;
+  node *left;
+  node *right;
 
-  int pInd = (s - 1) / 2;
-
-  if (pq[pInd] < pq[s])
+  node(int d)
   {
-    swap(pq[pInd], pq[s]);
-    upHeapify(pq, pInd);
+    data = d;
+    left = NULL;
+    right = NULL;
   }
-  else
+};
+
+void BFS(node *root)
+{
+
+  queue<node *> list;
+  list.push(root);
+  list.push(NULL);
+
+  while (list.size() != 0)
   {
-    return;
+    node *fron = list.front();
+
+    if (fron == NULL)
+    {
+      cout << endl;
+      list.pop();
+      if (list.size() != 0)
+      {
+        list.push(NULL);
+      }
+    }
+    else
+    {
+      cout << fron->data << " ";
+      list.pop();
+
+      if (fron->left)
+      {
+        list.push(fron->left);
+      }
+
+      if (fron->right)
+      {
+        list.push(fron->right);
+      }
+    }
   }
 }
 
-void insertElement(vector<int> &pq, int x)
+void preOrder(node *root)
 {
-  pq.push_back(x);
-  upHeapify(pq, pq.size() - 1);
-}
-
-void display(vector<int> pq)
-{
-  for (int i = 0; i < pq.size(); i++)
-  {
-    cout << pq[i] << " ";
-  }
-
-  cout << endl;
-}
-
-void downHeapify(vector<int> &pq, int root)
-{
-  int c1 = 2 * root + 1;
-  int c2 = 2 * root + 2;
-
-  if (c1 > pq.size() && c2 > pq.size())
-    return;
-
-  int final = root;
-
-  if (pq.size() >= c1 && pq[c1] > pq[final])
-  {
-    final = c1;
-  }
-  if (pq.size() >= c2 && pq[c2] > pq[final])
-  {
-    final = c2;
-  }
-  if (final == root)
-  {
-    return;
-  }
-  swap(pq[root], pq[final]);
-  downHeapify(pq, final);
-}
-
-void downHeapify2(vector<int> &pq, int root, int heapSize)
-{
-  int c1 = 2 * root + 1;
-  int c2 = 2 * root + 2;
-
-  if (c1 > heapSize && c2 > heapSize)
-    return;
-
-  int final = root;
-
-  if (heapSize > c1 && pq[c1] > pq[final])
-  {
-    final = c1;
-  }
-  if (heapSize > c2 && pq[c2] > pq[final])
-  {
-    final = c2;
-  }
-  if (final == root)
+  if (root == NULL)
   {
     return;
   }
-  swap(pq[root], pq[final]);
-  downHeapify2(pq, final, heapSize);
+
+  cout << root->data << " ";
+  preOrder(root->left);
+  preOrder(root->right);
 }
 
-void deleteo(vector<int> &pq, int sz)
+node *buildBST(vector<int> arr, int s, int e)
 {
-  swap(pq[0], pq[sz]);
-  pq.pop_back();
-  downHeapify(pq, 0);
-}
-
-void buildHeapOptimised(vector<int> &heap)
-{
-  for (int i = heap.size() - 1; i >= 0; i--)
+  if (s > e)
   {
-    downHeapify(heap, i);
+    return NULL;
   }
-}
 
-void heapSort(vector<int> &pq, int size)
-{
-  int heapSize = pq.size();
-  buildHeapOptimised(pq);
-  for (int i = size; i >= 0; i--)
-  {
-    swap(pq[0], pq[i]);
-    heapSize--;
-    downHeapify2(pq, 0, heapSize);
-  }
+  int mid = (s + e) / 2;
+
+  node *root = new node(arr[mid]);
+
+  root->left = buildBST(arr, s, mid - 1);
+  root->right = buildBST(arr, mid + 1, e);
+
+  return root;
 }
 
 int main()
 {
-  vector<int> pq;
-  int n;
-  cin >> n;
+  int t;
+  cin >> t;
 
-  for (int i = 0; i < n; i++)
+  while (t--)
   {
-    int x;
-    cin >> x;
-    insertElement(pq, x);
+    int n;
+    cin >> n;
+
+    vector<int> arr;
+
+    for (int i = 0; i < n; i++)
+    {
+      int x;
+      cin >> x;
+      arr.push_back(x);
+    }
+
+    node *root = buildBST(arr, 0, n - 1);
+    BFS(root);
+    cout << endl;
+
+    preOrder(root);
+    cout << endl;
   }
-
-  display(pq);
-  deleteo(pq, pq.size() - 1);
-  display(pq);
-  deleteo(pq, pq.size() - 1);
-  display(pq);
-
-  vector<int> heap;
-  for (int i = 0; i < n; i++)
-  {
-    int x;
-    cin >> x;
-    heap.push_back(x);
-  }
-
-  buildHeapOptimised(heap);
-  display(heap);
-
-  heapSort(pq, pq.size() - 1);
-  display(pq);
 }
