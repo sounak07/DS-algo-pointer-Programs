@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <queue>
 using namespace std;
 
 class node
@@ -16,134 +17,64 @@ public:
   }
 };
 
-void BFS(node *root)
+node *build(string s)
 {
-
-  queue<node *> list;
-  list.push(root);
-  list.push(NULL);
-
-  while (list.size() != 0)
+  if (s == "true")
   {
-    node *fron = list.front();
-
-    if (fron == NULL)
-    {
-      cout << endl;
-      list.pop();
-      if (list.size() != 0)
-      {
-        list.push(NULL);
-      }
-    }
-    else
-    {
-      cout << fron->data << " ";
-      list.pop();
-
-      if (fron->left)
-      {
-        list.push(fron->left);
-      }
-
-      if (fron->right)
-      {
-        list.push(fron->right);
-      }
-    }
-  }
-}
-
-node *insertBST(node *root, int d)
-{
-  if (root == NULL)
-  {
-    return new node(d);
-  }
-
-  if (d <= root->data)
-  {
-    root->left = insertBST(root->left, d);
-  }
-  else if (d > root->data)
-  {
-    root->right = insertBST(root->right, d);
-  }
-
-  return root;
-}
-
-node *buildTree(int n)
-{
-  node *root = NULL;
-  int d;
-  // cin >> d;
-
-  while (n--)
-  {
+    int d;
     cin >> d;
-    root = insertBST(root, d);
+    node *root = new node(d);
+    string l;
+    cin >> l;
+    if (l == "true")
+    {
+      root->left = build(l);
+    }
+    string r;
+    cin >> r;
+    if (r == "true")
+    {
+      root->right = build(r);
+    }
+    return root;
   }
-  return root;
+  return NULL;
 }
 
-void preOrder(node *root)
+pair<int, bool> isHeightBalancedOptimised(node *root)
 {
+  // Write your code here
+  pair<int, bool> ans;
+
   if (root == NULL)
   {
-    return;
+    ans.first = 0;
+    ans.second = true;
+    return ans;
   }
 
-  cout << root->data << " ";
-  preOrder(root->left);
-  preOrder(root->right);
-}
+  pair<int, bool> leftT = isHeightBalancedOptimised(root->left);
+  pair<int, bool> rightT = isHeightBalancedOptimised(root->right);
 
-void printRange(node *root, int k1, int k2, vector<int> &res)
-{
-  if (root == NULL)
+  ans.first = max(leftT.first, rightT.first) + 1;
+
+  if (abs(leftT.first - rightT.first) <= 1 && leftT.second && rightT.second)
   {
-    return;
+    ans.second = true;
   }
-
-  if (root->data >= k1 && root->data <= k2)
+  else
   {
-    res.push_back(root->data);
+    ans.second = false;
   }
 
-  printRange(root->left, k1, k2, res);
-  printRange(root->right, k1, k2, res);
+  return ans;
 }
 
 int main()
 {
-  int t;
-  cin >> t;
-  while (t--)
-  {
-    int n;
-    cin >> n;
+  node *root = build("true");
 
-    node *root = buildTree(n);
+  cout << boolalpha << isHeightBalancedOptimised(root).second << endl;
 
-    int k1, k2;
-    cin >> k1 >> k2;
-
-    cout << "# Preorder : ";
-    preOrder(root);
-    cout << endl;
-
-    vector<int> res;
-
-    cout << "# Nodes within range are : ";
-    printRange(root, k1, k2, res);
-
-    sort(res.begin(), res.end());
-
-    for (int x : res)
-    {
-      cout << x << " ";
-    }
-    cout << endl;
-  }
+  return 0;
 }

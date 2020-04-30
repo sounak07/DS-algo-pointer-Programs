@@ -12,6 +12,11 @@ using namespace std;
 #define pqb priority_queue<int>
 #define mk(arr, n, type) type *arr = new type[n];
 
+bool oppositeSigns(int x, int y)
+{
+    return ((x ^ y) < 0);
+}
+
 int main()
 {
 
@@ -19,33 +24,31 @@ int main()
     cin >> t;
     while (t--)
     {
-        string s;
-        cin >> s;
+        int n;
+        cin >> n;
 
-        vi v;
-        v.pb(0);
+        mk(arr, n, int);
 
-        int n = s.length();
+        for (int i = 0; i < n; i++)
+            cin >> arr[i];
+
+        long long sum = 0;
 
         for (int i = 0; i < n; i++)
         {
-            if (s[i] == 'R')
-                v.pb(i + 1);
+            int currMax = arr[i];
+            int j = i;
+
+            while (j < n && !oppositeSigns(arr[i], arr[j]))
+            {
+                currMax = max(currMax, arr[j]);
+                j++;
+            }
+
+            sum += currMax;
+            i = j - 1;
         }
-
-        v.pb(n + 1);
-
-        int ans = 0;
-
-        for (int i = 0; i < v.size() - 1; i++)
-        {
-            cout << v[i] << endl;
-        }
-
-        for (int i = 0; i < v.size() - 1; i++)
-            ans = max(ans, v[i + 1] - v[i]);
-
-        cout << ans << endl;
+        cout << sum << endl;
     }
 
     return 0;
