@@ -1,5 +1,4 @@
-#include <iostream>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
 class node
@@ -41,40 +40,95 @@ node *build(string s)
   return NULL;
 }
 
-pair<int, bool> isHeightBalancedOptimised(node *root)
+void BFS(node *root)
 {
-  // Write your code here
-  pair<int, bool> ans;
 
+  queue<node *> list;
+  list.push(root);
+  list.push(NULL);
+
+  while (list.size() != 0)
+  {
+    node *fron = list.front();
+
+    if (fron == NULL)
+    {
+      cout << endl;
+      list.pop();
+      if (list.size() != 0)
+      {
+        list.push(NULL);
+      }
+    }
+    else
+    {
+      cout << fron->data << " ";
+      list.pop();
+
+      if (fron->left)
+      {
+        list.push(fron->left);
+      }
+
+      if (fron->right)
+      {
+        list.push(fron->right);
+      }
+    }
+  }
+}
+
+void zigZag(node *root)
+{
   if (root == NULL)
+    return;
+  stack<node *> curr;
+  stack<node *> next;
+
+  curr.push(root);
+
+  bool parity = true;
+
+  while (curr.size() != 0)
   {
-    ans.first = 0;
-    ans.second = true;
-    return ans;
+    node *ttop = curr.top();
+    curr.pop();
+
+    if (ttop)
+    {
+      cout << ttop->data << " ";
+
+      if (parity == true)
+      {
+        if (ttop->left)
+          next.push(ttop->left);
+        if (ttop->right)
+          next.push(ttop->right);
+      }
+      else
+      {
+        if (ttop->right)
+          next.push(ttop->right);
+        if (ttop->left)
+          next.push(ttop->left);
+      }
+    }
+
+    if (curr.empty())
+    {
+      parity = !parity;
+      swap(curr, next);
+    }
   }
-
-  pair<int, bool> leftT = isHeightBalancedOptimised(root->left);
-  pair<int, bool> rightT = isHeightBalancedOptimised(root->right);
-
-  ans.first = max(leftT.first, rightT.first) + 1;
-
-  if (abs(leftT.first - rightT.first) <= 1 && leftT.second && rightT.second)
-  {
-    ans.second = true;
-  }
-  else
-  {
-    ans.second = false;
-  }
-
-  return ans;
 }
 
 int main()
 {
   node *root = build("true");
 
-  cout << boolalpha << isHeightBalancedOptimised(root).second << endl;
+  BFS(root);
 
+  zigZag(root);
+  cout << endl;
   return 0;
 }
