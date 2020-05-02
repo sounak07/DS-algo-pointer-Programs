@@ -16,30 +16,6 @@ public:
   }
 };
 
-node *build(string s)
-{
-  if (s == "true")
-  {
-    int d;
-    cin >> d;
-    node *root = new node(d);
-    string l;
-    cin >> l;
-    if (l == "true")
-    {
-      root->left = build(l);
-    }
-    string r;
-    cin >> r;
-    if (r == "true")
-    {
-      root->right = build(r);
-    }
-    return root;
-  }
-  return NULL;
-}
-
 void BFS(node *root)
 {
 
@@ -78,57 +54,137 @@ void BFS(node *root)
   }
 }
 
-void zigZag(node *root)
+node *insertBST(node *root, int d)
 {
   if (root == NULL)
-    return;
-  stack<node *> curr;
-  stack<node *> next;
-
-  curr.push(root);
-
-  bool parity = true;
-
-  while (curr.size() != 0)
   {
-    node *ttop = curr.top();
-    curr.pop();
+    return new node(d);
+  }
 
-    if (ttop)
+  if (d <= root->data)
+  {
+    root->left = insertBST(root->left, d);
+  }
+  else if (d > root->data)
+  {
+    root->right = insertBST(root->right, d);
+  }
+
+  return root;
+}
+
+node *buildTree(int n)
+{
+  node *root = NULL;
+  int d;
+  // cin >> d;
+
+  while (n--)
+  {
+    cin >> d;
+    root = insertBST(root, d);
+  }
+  return root;
+}
+
+void preOrder(node *root)
+{
+  if (root == NULL)
+  {
+    return;
+  }
+
+  cout << root->data << " ";
+  preOrder(root->left);
+  preOrder(root->right);
+}
+
+node *deleteNodeGiven(node *root, int k)
+{
+  if (root == NULL)
+  {
+    return NULL;
+  }
+  else if (k < root->data)
+  {
+    root->left = deleteNodeGiven(root->left, k);
+    return root;
+  }
+  else if (root->data == k)
+  {
+    if (root->left == NULL && root->right == NULL)
     {
-      cout << ttop->data << " ";
-
-      if (parity == true)
-      {
-        if (ttop->left)
-          next.push(ttop->left);
-        if (ttop->right)
-          next.push(ttop->right);
-      }
-      else
-      {
-        if (ttop->right)
-          next.push(ttop->right);
-        if (ttop->left)
-          next.push(ttop->left);
-      }
+      delete root;
+      return NULL;
     }
 
-    if (curr.empty())
+    if (root->left != NULL && root->right == NULL)
     {
-      parity = !parity;
-      swap(curr, next);
+
+      node *temp = root->left;
+      delete root;
+      return temp;
     }
+
+    if (root->left == NULL && root->right != NULL)
+    {
+
+      node *temp = root->right;
+      delete root;
+      return temp;
+    }
+
+    node *temp = root->right;
+
+    while (temp->left != NULL)
+    {
+      temp = temp->left;
+    }
+
+    swap(root->data, temp->data);
+    root->right = deleteNodeGiven(root->right, temp->data);
+
+    return root;
+  }
+  else
+  {
+    root->right = deleteNodeGiven(root->right, k);
+    return root;
   }
 }
 
 int main()
 {
-  node *root = build("true");
+  int t;
+  cin >> t;
+  while (t--)
+  {
+    int n;
+    cin >> n;
 
-  BFS(root);
+    node *root = buildTree(n);
 
-  zigZag(root);
-  cout << endl;
-  return 0;
+    // BFS(root);
+
+    int m;
+    cin >> m;
+
+    int arr[m];
+    for (int i = 0; i < m; i++)
+    {
+      cin >> arr[i];
+    }
+
+    node *newR = NULL;
+
+    for (int i = 0; i < m; i++)
+    {
+      newR = deleteNodeGiven(root, arr[i]);
+    }
+    cout << endl;
+    // BFS(root);
+    preOrder(newR);
+
+    cout << endl;
+  }
 }
