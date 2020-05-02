@@ -70,5 +70,5 @@ int main()
     node *root = BuildTree();
     int x = diametre(root);
 
-    cout << x << endl;
+    cout << x << "" << endl;
 }
