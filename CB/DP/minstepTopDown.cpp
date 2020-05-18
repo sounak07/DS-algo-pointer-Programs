@@ -2,6 +2,8 @@
 using namespace std;
 typedef long long int ll;
 
+//problem is taking n to 1 how ? we have n-1,n/2,n/3 allowed ways
+
 int minsteps(int n, int dp[])
 {
     if (n == 1)

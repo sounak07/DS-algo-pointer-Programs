@@ -2,76 +2,58 @@
 using namespace std;
 typedef long long ll;
 
-void solve()
+void solve(string s1, string s2)
 {
-  int n;
-  cin >> n;
+  int n1 = s1.length();
+  int n2 = s2.length();
 
-  int arr[n + 1];
+  int dp[1000][1000] = {0};
 
-  for (int i = 0; i < n; i++)
+  string ans = "";
+
+  for (int i = 1; i <= n1; i++)
   {
-    cin >> arr[i];
+    for (int j = 1; j <= n2; j++)
+    {
+      if (s1[i - 1] == s2[j - 1])
+      {
+        dp[i][j] = dp[i - 1][j - 1] + 1;
+      }
+      else
+      {
+        dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+      }
+    }
   }
 
-  priority_queue<int> p;
-  priority_queue<int, vector<int>, greater<int>> q;
+  int i = n1, j = n2;
 
-  int median;
-
-  p.push(arr[0]);
-  median = arr[0];
-
-  cout << median << " ";
-
-  for (int i = 1; i < n; i++)
+  while (i > 0 && j > 0)
   {
-    int x = arr[i];
 
-    if (p.size() == q.size())
+    if (dp[i][j - 1] == dp[i - 1][j] && dp[i][j - 1] < dp[i][j] && dp[i - 1][j] < dp[i][j])
     {
-      if (x > median)
+      ans += s1[i - 1];
+      i--;
+      j--;
+    }
+    else
+    {
+      if (dp[i][j] == dp[i][j - 1])
       {
-        q.push(x);
-        median = q.top();
+
+        j--;
       }
       else
       {
-        p.push(x);
-        median = p.top();
+        i--;
       }
     }
-    else if (p.size() > q.size())
-    {
-      if (x < median)
-      {
-        q.push(p.top());
-        p.pop();
-        p.push(x);
-      }
-      else
-      {
-        q.push(x);
-      }
+  }
 
-      median = (p.top() + q.top()) / 2;
-    }
-    else if (p.size() < q.size())
-    {
-      if (x > median)
-      {
-        p.push(q.top());
-        q.pop();
-        q.push(x);
-      }
-      else
-      {
-        p.push(x);
-      }
-      median = (p.top() + q.top()) / 2;
-    }
-
-    cout << median << " ";
+  for (int i = ans.length() - 1; i >= 0; i--)
+  {
+    cout << ans[i];
   }
 
   cout << endl;
@@ -79,11 +61,8 @@ void solve()
 
 int main()
 {
-  int t;
-  cin >> t;
+  string s1, s2;
+  cin >> s1 >> s2;
 
-  while (t--)
-  {
-    solve();
-  }
+  solve(s1, s2);
 }
